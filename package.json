@@ -1,15 +1,14 @@
 {
-  "name": "rlh",
+  "name": "CodeRed",
   "version": "1.0.0",
-  "description": "Sentinel",
-  "main": "Index.js",
+  "description": "CodeRed Discord Bot",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ItsBranK",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.5.3",
-    "mysql": "^2.18.1"
+    "discord.js": "^12.5.3"
   }
 }
