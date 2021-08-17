@@ -77,7 +77,7 @@ module.exports.execute = (client, message, args) => {
 module.exports.command = {
     name: "filter",
     description: "Add or remove words to the text filter.",
-    usage: "filter <add-remove-view> <username-phrase> <words-optional>",
+    usage: "filter <add-remove-view> <username-phrase> <words>",
     emote: globals.emotes.list,
 
     isPermitted: function(guildMember) {

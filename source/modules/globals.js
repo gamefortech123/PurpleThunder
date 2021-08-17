@@ -19,6 +19,7 @@ module.exports = {
         bot: "https://github.com/CodeRedModding/CodeRed-Bot/"
     },
 
+    // Powered By: Icons8.com
     // Style: Material Filled
     emotes: {
         // CodeRed
