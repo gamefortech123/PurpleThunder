@@ -69,7 +69,7 @@ module.exports.execute = async(client, message, args) => {
 module.exports.command = {
     name: "status",
     description: "Sets the update status message for CodeRed.",
-    usage: "say <normal-testing-outdated>",
+    usage: "status <normal-testing-outdated>",
     emote: globals.emotes.megaphone,
 
     isPermitted: function(guildMember) {
