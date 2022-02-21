@@ -24,7 +24,7 @@ module.exports.execute = async(client, message, args) => {
                     .setColor(globals.colors.green)
                     .setAuthor("Up to Date", "https://i.imgur.com/0B4J12c.png")
                     .setTitle("CodeRed is Currently Up To Date!")
-                    .setDescription("If you are getting an out of date message with the mod, click the `Check For Updates` button in the injectors settings to download the latest version!")
+                    .setDescription("If you are getting an out of date message with the module, click the `Check For Updates` button in the launchers about tab to download the latest version!")
                     .setFooter(client.user.username, client.user.displayAvatarURL({}))
                     .setTimestamp();
 
@@ -36,7 +36,7 @@ module.exports.execute = async(client, message, args) => {
                     .setColor(globals.colors.orange)
                     .setAuthor("Looking For Testers", "https://i.imgur.com/rhZijtq.png")
                     .setTitle("CodeRed is Being Tested!")
-                    .setDescription(`An update is being worked on but is not yet final, if you would like to help out check off the \`Use Experimental Versions\` checkbox in the injectors settings and please report any bugs in <#${server.text_channels.bugs}>.`)
+                    .setDescription(`An update is being worked on but is not yet final, if you would like to help out check off the \`Use Experimental Versions\` checkbox in the launchers settings tab and please report any bugs in <#${server.text_channels.bugs}>.`)
                     .setFooter(client.user.username, client.user.displayAvatarURL({}))
                     .setTimestamp();
 
