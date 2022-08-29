@@ -41,7 +41,7 @@ module.exports.execute = (client, message, args) => {
                     filter[table].push(textToFilter);
 
                     const filterEmbed = new discord.MessageEmbed()
-                        .setColor(globals.colors.red)
+                        .setColor(globals.colors.purple)
                         .setDescription(`${globals.emotes.success} Successfully added \`${textToFilter}\` to the blacklisted ${table} database.`)
                         .setFooter(client.user.username, client.user.displayAvatarURL({}))
                         .setTimestamp();
@@ -56,7 +56,7 @@ module.exports.execute = (client, message, args) => {
                     filter[table].splice(filter[table].indexOf(textToFilter), 1);
 
                     const filterEmbed = new discord.MessageEmbed()
-                        .setColor(globals.colors.red)
+                        .setColor(globals.colors.purple)
                         .setDescription(`${globals.emotes.success} Successfully removed \`${textToFilter}\` from the blacklisted ${table} database.`)
                         .setFooter(client.user.username, client.user.displayAvatarURL({}))
                         .setTimestamp();
@@ -78,19 +78,19 @@ module.exports.command = {
     name: "filter",
     description: "Add or remove words to the text filter.",
     usage: "filter <add-remove-view> <username-phrase> <words>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator, server.roles.support],
     emote: globals.emotes.list,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator)
-            || guildMember.roles.cache.has(server.roles.support))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

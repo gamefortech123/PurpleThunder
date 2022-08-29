@@ -38,7 +38,7 @@ module.exports.execute = (client, message, args) => {
                 try
                 {
                     const banEmbed = new discord.MessageEmbed()
-                        .setColor(globals.colors.red)
+                        .setColor(globals.colors.purple)
                         .addFields({ name: `You have been banned from the CodeRed Discord server!`, value: `**Reason:** ${banMessage}` })
                         .setFooter(client.user.username, client.user.displayAvatarURL({}))
                         .setTimestamp();
@@ -86,17 +86,19 @@ module.exports.command = {
     name: "ban",
     description: "Permanently bans a user from the server with an optional message.",
     usage: "ban <user> <message-optional>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator],
     emote: globals.emotes.ban,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

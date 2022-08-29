@@ -29,7 +29,7 @@ module.exports.execute = (client, message, args) => {
             }
 
             const muteEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .setDescription(`${this.command.emote} Successfully unmuted <@${member.user.id}>.`)
                 .setFooter(client.user.username, client.user.displayAvatarURL({}))
                 .setTimestamp();
@@ -37,7 +37,7 @@ module.exports.execute = (client, message, args) => {
             message.channel.send(muteEmbed).then(msg => msg.delete({ timeout: 5000 }).then(message.delete({ timeout: 5000 })));
 
             const logEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .setAuthor(message.author.tag, message.author.displayAvatarURL({}))
                 .setDescription(`${this.command.emote} Unmuted <@${member.user.id}>.`)
                 .setFooter(`User ID: ${member.user.id}`)
@@ -62,18 +62,19 @@ module.exports.command = {
     name: "unmute",
     description: "Unmutes a user that has been previously muted.",
     usage: "unmute <user>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.angel,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

@@ -34,7 +34,7 @@ module.exports.execute = (client, message, args) => {
             fs.writeFile("./databases/record.json", JSON.stringify(record), (e) => { if (e) console.log(e) });
 
             const warnEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .addField(`${this.command.emote} ${member.user.tag} Has been warned by ${message.author.tag}!`, `**Reason:** ${warnReason}`)
                 .setFooter(`User ID: ${member.user.id}`)
                 .setTimestamp();
@@ -57,18 +57,19 @@ module.exports.command = {
     name: "warn",
     description: "Warn a user for a specific reason.",
     usage: "warn <user> <reason>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.warning,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

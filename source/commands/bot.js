@@ -16,17 +16,21 @@ module.exports.execute = async(client, message, args) => {
 
 module.exports.command = {
     name: "bot",
-    description: "Sends a link to the bots source code.",
+    description: "Sends a link to the bots source code on GitHub.",
     usage: "bot",
+    roles: [server.roles.member],
     emote: globals.emotes.link,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

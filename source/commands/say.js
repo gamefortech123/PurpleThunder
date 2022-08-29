@@ -35,18 +35,19 @@ module.exports.command = {
     name: "say",
     description: "Send a message through the bot to a specific channel.",
     usage: "say <channel-optional> <message>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.megaphone,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

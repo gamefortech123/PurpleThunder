@@ -35,15 +35,19 @@ module.exports.command = {
     name: "verify",
     description: "Verify that a user is not a bot with a given verification code.",
     usage: "verify <code>",
+    roles: [server.roles.member],
     emote: globals.emotes.robot,
 
     isPermitted: function(guildMember) {
-        if (!guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

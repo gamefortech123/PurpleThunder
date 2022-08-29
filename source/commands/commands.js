@@ -16,14 +16,14 @@ module.exports.execute = (client, message, args) => {
             helpString += `${cmd.command.emote} **${config.prefix}${cmd.command.usage}**\n${cmd.command.description}\n`;
         }
         
-        const helpEmbed = new discord.MessageEmbed()
-            .setColor(globals.colors.red)
-            .setTitle(`${this.command.emote} Commands`)
+        const commandEmbed = new discord.MessageEmbed()
+            .setColor(globals.colors.purple)
+            .setTitle(`Commands`)
             .setDescription(helpString)
             .setFooter(client.user.username, client.user.displayAvatarURL({}))
             .setTimestamp();
 
-        message.channel.send(helpEmbed);
+        message.channel.send(commandEmbed);
     }
     else
     {
@@ -35,15 +35,19 @@ module.exports.command = {
     name: "help",
     description: "Kicks a user from the server with a message.",
     usage: "help",
+    roles: [server.roles.member],
     emote: globals.emotes.info,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

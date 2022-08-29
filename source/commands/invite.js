@@ -16,17 +16,21 @@ module.exports.execute = async(client, message, args) => {
 
 module.exports.command = {
     name: "invite",
-    description: "Sends an invite link to the server.",
+    description: "Sends an invite link to this Discord server.",
     usage: "invite",
+    roles: [server.roles.member],
     emote: globals.emotes.discord,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

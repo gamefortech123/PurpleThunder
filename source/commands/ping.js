@@ -19,15 +19,19 @@ module.exports.command = {
     name: "ping",
     description: "Check the latency of the bots VPS and the Discords API.",
     usage: "ping",
+    roles: [server.roles.member],
     emote: globals.emotes.ping,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

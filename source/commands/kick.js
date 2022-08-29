@@ -44,7 +44,7 @@ module.exports.execute = (client, message, args) => {
                 try
                 {
                     const kickEmbed = new discord.MessageEmbed()
-                        .setColor(globals.colors.orange)
+                        .setColor(globals.colors.purple)
                         .addFields({ name: `You have been kicked from the CodeRed Discord server!`, value: `**Reason:** ${kickMessage}` })
                         .setFooter(client.user.username, client.user.displayAvatarURL({}))
                         .setTimestamp();
@@ -94,18 +94,19 @@ module.exports.command = {
     name: "kick",
     description: "Kicks a user from the server with an optional message.",
     usage: "kick <user> <message-optional>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.kick,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

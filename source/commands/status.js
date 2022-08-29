@@ -70,16 +70,19 @@ module.exports.command = {
     name: "status",
     description: "Sets the update status message for CodeRed.",
     usage: "status <normal-testing-outdated>",
+    roles: [server.roles.bot, server.roles.codered],
     emote: globals.emotes.megaphone,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

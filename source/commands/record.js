@@ -22,7 +22,7 @@ module.exports.execute = (client, message, args) => {
                 record[member.id].history.forEach(history => historyString += `${history}\n`);
 
                 const recordEmbed = new discord.MessageEmbed()
-                    .setColor(globals.colors.red)
+                    .setColor(globals.colors.purple)
                     .setTitle(`User Record for ${member.user.tag}`)
                     .setDescription(`**Warnings:** ${warnings}
                     **Mutes:** ${mutes}
@@ -38,7 +38,7 @@ module.exports.execute = (client, message, args) => {
             else
             {
                 const recordEmbed = new discord.MessageEmbed()
-                    .setColor(globals.colors.white)
+                    .setColor(globals.colors.purple)
                     .setDescription(`No record found, user \`${member.user.tag}\` is squeaky clean!`)
                     .setFooter(client.user.username, client.user.displayAvatarURL({}))
                     .setTimestamp();
@@ -61,18 +61,19 @@ module.exports.command = {
     name: "record",
     description: "Displays a full record of warnings, mutes, kicks, and bans for a given user.",
     usage: "record <user>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.list,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

@@ -14,7 +14,7 @@ module.exports.execute = (client, message, args) => {
             if (message.mentions.users.size > 0)
             {
                 urlMessage = args.join(" ");
-                urlMessage = urlMessage.substr(urlMessage.indexOf(" ") + 1);
+                urlMessage = urlMessage.substring(urlMessage.indexOf(" ") + 1);
                 urlFormat = urlMessage.split(" ").join("+");
                 message.channel.send(`${message.mentions.users.first()}\nhttps://lmgtfy.com/?q=${urlFormat}`);
             }
@@ -43,15 +43,19 @@ module.exports.command = {
     name: "lmgtfy",
     description: "Generates a Let Me Google That For You link with given arguments.",
     usage: "lmgtfy <user-to-mention-optional> <phrase-to-google>",
+    roles: [server.roles.member],
     emote: globals.emotes.google,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

@@ -11,7 +11,7 @@ module.exports.execute = (client, message, args) => {
             delete require.cache[require.resolve(`./${args[0]}.js`)];
 
             const reloadEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .setDescription(`${globals.emotes.success} Successfully reloaded the file: \`${args[0]}.js\`!`)
                 .setFooter(client.user.username, client.user.displayAvatarURL({}))
                 .setTimestamp();
@@ -21,7 +21,7 @@ module.exports.execute = (client, message, args) => {
         catch (e)
         {
             const reloadEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .setDescription(`${globals.emotes.error} Failed to reload the file: \`${args[0]}.js\`!`)
                 .setFooter(client.user.username, client.user.displayAvatarURL({}))
                 .setTimestamp();
@@ -40,18 +40,19 @@ module.exports.command = {
     name: "reload",
     description: "Deletes a commands resolved cache.",
     usage: "reload <command-name>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.reload,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

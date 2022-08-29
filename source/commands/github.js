@@ -16,17 +16,21 @@ module.exports.execute = async(client, message, args) => {
 
 module.exports.command = {
     name: "github",
-    description: "Sends a link to the CodeRed GitHub page.",
+    description: "Sends a link to the CodeRedModding GitHub page.",
     usage: "github",
+    roles: [server.roles.member],
     emote: globals.emotes.link,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.member))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

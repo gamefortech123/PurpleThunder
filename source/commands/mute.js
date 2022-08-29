@@ -51,7 +51,7 @@ module.exports.execute = (client, message, args) => {
             }
 
             const muteEmbed = new discord.MessageEmbed()
-                .setColor(globals.colors.red)
+                .setColor(globals.colors.purple)
                 .setDescription(`${this.command.emote} Successfully muted <@${member.user.id}>.`)
                 .setFooter(client.user.username, client.user.displayAvatarURL({}))
                 .setTimestamp();
@@ -86,18 +86,19 @@ module.exports.command = {
     name: "mute",
     description: "Prevent a user from talking in text chat and joining voice channels.",
     usage: "mute <user> <reason>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator, server.roles.moderator],
     emote: globals.emotes.mute,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator)
-            || guildMember.roles.cache.has(server.roles.moderator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {

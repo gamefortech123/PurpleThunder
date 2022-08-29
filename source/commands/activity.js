@@ -38,17 +38,19 @@ module.exports.command = {
     name: "activity",
     description: "Set the bots current online status.",
     usage: "activity <online-idle-invisible-dnd>",
+    roles: [server.roles.bot, server.roles.codered, server.roles.administrator],
     emote: globals.emotes.server,
 
     isPermitted: function(guildMember) {
-        if (guildMember.roles.cache.has(server.roles.bot)
-            || guildMember.roles.cache.has(server.roles.codered)
-            || guildMember.roles.cache.has(server.roles.administrator))
-        {
-            return true;
-        }
+        var hasRole = false;
 
-        return false;
+        this.roles.forEach(role => {
+            if (guildMember.roles.cache.has(role)) {
+                hasRole = true;
+            }
+        });
+
+        return hasRole;
     },
 
     printUsage: function(client, channel) {
